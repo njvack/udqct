@@ -31,18 +31,26 @@ You can *query* -- how many outliers are in this row? What is the distribution o
 
 You can *censor* -- if I leave a cell's value out, how does the column's distribution change? Mainly, this will be to alleviate scaling problems in viweing the distribution.
 
+You can *describe* -- choose a set of columns to act as a human-readable identifier.
+
+You can *share* your current view with other people, by sending a link. *Maybe this is dumb and not useful?*
+
 ## What *Can't* You Do?
 
 You can't change values.
 
 You can't impute values.
 
-You can't annotate things, or keep any particular state. This is not a lab notebook.
+You can't annotate things, or keep any complex state. This is not a lab notebook.
 
 You (probably?) can't download the data.
 
-You can't download a picture of the data.
+You can't download a picture of the data. This would be dumb.
 
 ## Implementation
 
-Backend is (probably) python+flask+pandas+pytables. Frontend is HTML5. Render in maybe HTML table, maybe canvas or webgl if necessary.
+Backend is (probably) python+flask+pandas+pytables. Frontend is HTML5. Render in maybe HTML table; canvas or webgl if necessary for "decent" performance. "Decent" means not laggy-feeling on my 5-year-old Air and Chrome with a 300x1000 dataset.
+
+Data is input either as an uploaded CSV (Excel?) file, or as a URL to one. It'll be downloaded, put in a dataframe, and saved to disk. We'll generate a scatterize-like unique URL and redirect to that.
+
+It will probably make sense to do some diagnostic stuff in python (find outliers, classify columns, etc) and then send the data (as JSON?) up to the client for rendering.
