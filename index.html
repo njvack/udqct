@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Udqct by njvack</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Udqct</h1>
+        <p>Untitled Data Quality Check Tool</p>
+
+        <p class="view"><a href="https://github.com/njvack/udqct">View the Project on GitHub <small>njvack/udqct</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/njvack/udqct/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/njvack/udqct/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/njvack/udqct">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="udqct" class="anchor" href="#udqct" aria-hidden="true"><span class="octicon octicon-link"></span></a>udqct</h1>
+
+<p>The Untitled Data Quality Check Tool</p>
+
+<h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>The purpose of this is to be able to quickly find Points of Concern in spreadsheets of data. It's to let you know about outliers and missing data <em>before</em> you get all excited about that regression you ran (but haven't looked a the scatterplot).</p>
+
+<p>It should show the <em>type</em> of data you have: show whether it is <em>identifying</em> (unique or nearly so), <em>categorical</em> (eg, group assignment), <em>continuous</em> (can take many values), <em>ordinal</em> (ordered, but not so many values), or <em>missing.</em></p>
+
+<p><em>We'll need heuristics for detecting these. Do we need to differentiate between Ordinal and Continuous in this tool?</em></p>
+
+<p>Target data size is in the 300 rows by 1000 columns neighborhood. <em>What do we do with data much larger than this?</em></p>
+
+<p>Basic layout will probably be a grid, with cells colored by data type. Continuous (and ordinal?) columns are be colored with a diverging color ramp corresponding to the demeaned, z-scored value. Most values will be very close to the center of this scale; outliers will get a big jump to the extreme ends. <em>Or maybe there won't be a color ramp for non-outlier points? Do we care about how that distribution looks by color? Will people be tempted to see non-useful patterns? If you can sort, this might be more useful.</em></p>
+
+<p>Categorical data will get colors (from the same family) for each value, to show general variability. <em>Or maybe no ramp for categorical points, either; just the same color?</em></p>
+
+<p>Identifying data will be shown in a single (muted) color.</p>
+
+<p>Missing data will be shown in a single (distinct) color.</p>
+
+<p>ANYHOW essentially color will be how you tell if a cell is <em>identifying,</em> <em>normal,</em> <em>outlying,</em> or <em>missing.</em> I think that's the essential distinction. Indicating low/high outlying points may be important, too.</p>
+
+<h2>
+<a id="what-can-you-do" class="anchor" href="#what-can-you-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Can You Do?</h2>
+
+<p>You can <em>navigate</em> -- you need to be able to somehow see what you have in a substantially large data file. Probably, trying to stuff everything into one viewport won't work very well.</p>
+
+<p>You can <em>filter</em> -- show only columns/rows with outlying points, also filter rows or columns with some kind of search.</p>
+
+<p>You can <em>query</em> -- how many outliers are in this row? What is the distribution of values in this column? Is it significantly non-normal? What is the value of this cell and where is it on the column's overall distribution?</p>
+
+<p>You can <em>censor</em> -- if I leave a cell's value out, how does the column's distribution change? Mainly, this will be to alleviate scaling problems in viweing the distribution.</p>
+
+<p>You can <em>describe</em> -- choose a set of columns to act as a human-readable identifier.</p>
+
+<p>You can <em>share</em> your current view with other people, by sending a link. <em>Maybe this is dumb and not useful?</em></p>
+
+<h2>
+<a id="what-cant-you-do" class="anchor" href="#what-cant-you-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>What <em>Can't</em> You Do?</h2>
+
+<p>You can't change values.</p>
+
+<p>You can't impute values.</p>
+
+<p>You can't annotate things, or keep any complex state. This is not a lab notebook.</p>
+
+<p>You (probably?) can't download the data.</p>
+
+<p>You can't download a picture of the data. This would be dumb.</p>
+
+<h2>
+<a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementation</h2>
+
+<p>Backend is (probably) python+flask+pandas+pytables. Frontend is HTML5. Render in maybe HTML table; canvas or webgl if necessary for "decent" performance. "Decent" means not laggy-feeling on my 5-year-old Air and Chrome with a 300x1000 dataset.</p>
+
+<p>Data is input either as an uploaded CSV (Excel?) file, or as a URL to one. It'll be downloaded, put in a dataframe, and saved to disk. We'll generate a scatterize-like unique URL and redirect to that.</p>
+
+<p>It will probably make sense to do some diagnostic stuff in python (find outliers, classify columns, etc) and then send the data (as JSON?) up to the client for rendering.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/njvack">njvack</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
